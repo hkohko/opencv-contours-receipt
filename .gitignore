@@ -3,7 +3,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+extracted_image/
 *.jpg
 # C extensions
 *.so
