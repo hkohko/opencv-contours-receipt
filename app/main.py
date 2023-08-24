@@ -58,10 +58,12 @@ def main(save: bool):
     blur_img = blur(img)
     mask_img = mask(blur_img)
     cont, cont_img = contour(mask_img)
-    show_boundingrect(cont, cont_img)
+    if not save:
+        show_boundingrect(cont, cont_img)
     if save:
         save_images(cont)
+        show_boundingrect(cont, cont_img)
 
 
 if __name__ == "__main__":
-    main(False)
+    main(True)
