@@ -34,10 +34,7 @@ def contour(mask_img):
 
 
 def show_boundingrect(cont, cont_image):
-    idx = [int(x[:-4]) for x in listdir(f"{getcwd()}/extracted_image")]
-    number = 0 if len(idx) == 0 else max(idx)
     for c in cont:
-        number += 1
         x, y, w, h = cv.boundingRect(c)
         cv.rectangle(cont_image, (x, y), (x + w, y + h), (0, 255, 0), 2)
     resize_sample_image = cv.resize(
