@@ -1,6 +1,6 @@
 import cv2 as cv
 from pathlib import PurePath
-from os import getcwd, mkdir, listdir
+from os import mkdir, listdir
 from os.path import exists
 
 MAIN_DIR = PurePath(__file__).parents[1]
@@ -45,10 +45,10 @@ def show_boundingrect(cont, cont_image):
 
 
 def save_images(cont, image_subfolder: str):
-    save_subfolder = str(EXTRACTED_IMAGE.joinpath(f"{image_subfolder}"))
+    save_subfolder = str(EXTRACTED_IMAGE.joinpath(image_subfolder))
     if not exists(save_subfolder):
         mkdir(save_subfolder)
-    idx = [int(x[:-4]) for x in listdir(EXTRACTED_IMAGE.joinpath(image_subfolder))]
+    idx = [int(x[:-4]) for x in listdir(save_subfolder)]
     number = 0 if len(idx) == 0 else max(idx)
     for c in cont:
         number += 1
