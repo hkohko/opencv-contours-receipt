@@ -1,16 +1,13 @@
 import cv2 as cv
+from pathlib import PurePath
 from os import getcwd, mkdir, listdir
 from os.path import exists
 
-if not exists("extracted_image"):
-    mkdir("extracted_image")
+MAIN_DIR = PurePath(__file__).parents[1]
+EXTRACTED_IMAGE = MAIN_DIR.joinpath("extracted_image")
 
-image = rf"{getcwd()}\multiple_imgs_2.jpg"
-print(image)
-assert image is not None, "image not found"
-cv_img = cv.imread(image)
-img = cv.rotate(cv_img.copy(), cv.ROTATE_90_CLOCKWISE)
-image_to_output = cv.rotate(cv_img, cv.ROTATE_90_CLOCKWISE)
+if not exists(str(EXTRACTED_IMAGE)):
+    mkdir(str(EXTRACTED_IMAGE))
 
 
 def blur(img):
@@ -44,26 +41,38 @@ def show_boundingrect(cont, cont_image):
     cv.waitKey()
 
 
-def save_images(cont):
+def save_images(cont, image_subfolder):
     idx = [int(x[:-4]) for x in listdir(f"{getcwd()}/extracted_image")]
     number = 0 if len(idx) == 0 else max(idx)
     for c in cont:
         number += 1
         x, y, w, h = cv.boundingRect(c)
         roi = image_to_output[y : y + h, x : x + w]
-        cv.imwrite(f"{getcwd()}/extracted_image/{str(number)}" + ".jpg", roi)
+        save_subfolder = str(EXTRACTED_IMAGE.joinpath(f"{image_subfolder}"))
+        if not exists(save_subfolder):
+            mkdir(save_subfolder)
+        cv.imwrite(f"{save_subfolder}/{str(number)}" + ".jpg", roi)
 
 
-def main(save: bool):
+def main(save: bool, image_subfolder: str):
     blur_img = blur(img)
     mask_img = mask(blur_img)
     cont, cont_img = contour(mask_img)
     if not save:
         show_boundingrect(cont, cont_img)
     if save:
-        save_images(cont)
+        save_images(cont, image_subfolder)
         show_boundingrect(cont, cont_img)
 
 
 if __name__ == "__main__":
-    main(True)
+    entry = input("Image name: ")
+    files = listdir(MAIN_DIR)
+    image_entry = next(file for file in files if entry in file.lower())
+    image = str(MAIN_DIR.joinpath(f"{image_entry}"))
+    print(image)
+    assert image is not None, "image not found"
+    cv_img = cv.imread(image)
+    img = cv.rotate(cv_img.copy(), cv.ROTATE_90_CLOCKWISE)
+    image_to_output = cv.rotate(cv_img, cv.ROTATE_90_CLOCKWISE)
+    main(True, image_entry[:-4])
