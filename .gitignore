@@ -5,6 +5,9 @@ __pycache__/
 *$py.class
 extracted_image/
 collage/
+bin/
+lib/
+lib64
 *.jpg
 # C extensions
 *.so
