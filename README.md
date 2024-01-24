@@ -29,7 +29,7 @@ pip install -r requirements.txt
 ```
 # How to Use:  
 ## First time user:  
-Run `app/main.py` once, and close it. 
+Run `python app/main.py` once, and close it. 
 This is to make sure you have all the directories in the project folder:
 1. `collage/`
 2. `extracted_images/`
@@ -38,6 +38,6 @@ Or you can just create it manually, up to you.
 
 ## Moving on  
 1. Put your collage image in the `collage/` folder.
-2. Run `app/main.py`, and type in the collage image filename. It doesn't have to be exact, just a string of words that the filename contains is fine.
+2. Run `python app/main.py`, and type in the collage image filename. It doesn't have to be exact, just a string of words that the filename contains is fine.
 3. Press `enter` and your chopped-up image is in `extracted_images/`
 
