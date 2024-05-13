@@ -1,6 +1,6 @@
 import cv2 as cv
 from cv2 import UMat
-from pathlib import PurePath
+from pathlib import PurePath, Path
 from typing import Sequence
 from os import mkdir, listdir
 from os.path import exists
@@ -47,11 +47,11 @@ def show_boundingrect(cont: Sequence[UMat], cont_image: UMat):
     cv.waitKey()
 
 
-def save_images(cont, image_subfolder: str, image_to_output):
+def save_images(cont: Sequence[UMat], image_subfolder: str, image_to_output: UMat):
     save_subfolder = str(EXTRACTED_IMAGE.joinpath(image_subfolder))
     if not exists(save_subfolder):
         mkdir(save_subfolder)
-    idx = [int(x[:-4]) for x in listdir(save_subfolder)]
+    idx = [int(file.stem) for file in Path(save_subfolder).iterdir()]
     number = 0 if len(idx) == 0 else max(idx)
     for c in cont:
         number += 1
@@ -60,27 +60,26 @@ def save_images(cont, image_subfolder: str, image_to_output):
         cv.imwrite(f"{save_subfolder}/{str(number)}" + ".jpg", roi)
 
 
-def main(save: bool, image_subfolder: str, img: UMat, image_to_output: UMat):
+def main(test: bool, image_subfolder: str, image_path: str):
+    cv_img = cv.imread(image_path)
+    img = cv.rotate(cv_img.copy(), cv.ROTATE_90_CLOCKWISE)
+    image_to_output = cv.rotate(cv_img, cv.ROTATE_90_CLOCKWISE)
     blur_img = blur(img)
     mask_img = mask(blur_img)
     cont, cont_img, _ = contour(mask_img, img)
-    if not save:
+    if not test:
         show_boundingrect(cont, cont_img)
-    if save:
-        save_images(cont, image_subfolder, image_to_output)
-        show_boundingrect(cont, cont_img)
+    save_images(cont, image_subfolder, image_to_output)
 
 
 def cli():
     entry = input("Image name: ")
-    files = listdir(COLLAGE)
-    image_entry = next(file for file in files if entry.lower() in file.lower())
-    image = str(COLLAGE.joinpath(image_entry))
-    print(image)
-    cv_img = cv.imread(image)
-    img = cv.rotate(cv_img.copy(), cv.ROTATE_90_CLOCKWISE)
-    image_to_output = cv.rotate(cv_img, cv.ROTATE_90_CLOCKWISE)
-    main(True, image_entry[:-4], img, image_to_output)
+    files = Path(COLLAGE).iterdir()
+    image_entry = next(
+        file for file in files if entry.lower() in file.stem)
+    image_path = str(COLLAGE.joinpath(image_entry))
+    print(image_path)
+    main(True, image_entry.stem, image_path)
 
 
 if __name__ == "__main__":
