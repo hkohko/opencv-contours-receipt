@@ -1,0 +1,25 @@
+[project]
+name = "contours"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "rfdzan", email = "hekodev.py@gmail.com"},
+]
+dependencies = [
+    "opencv-python>=4.9.0.80",
+    "pytest>=8.2.0",
+]
+requires-python = "==3.12.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
+[tool.pdm.scripts]
+start = "python project.py"
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "mypy>=1.10.0",
+]
