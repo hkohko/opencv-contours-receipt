@@ -7,7 +7,6 @@ authors = [
 ]
 dependencies = [
     "opencv-python>=4.9.0.80",
-    "pytest>=8.2.0",
 ]
 requires-python = "==3.12.*"
 readme = "README.md"
@@ -22,4 +21,5 @@ start = "python project.py"
 [tool.pdm.dev-dependencies]
 dev = [
     "mypy>=1.10.0",
+    "pytest>=8.2.0",
 ]
