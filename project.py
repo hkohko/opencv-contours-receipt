@@ -25,7 +25,7 @@ def mask(blur_img, low: int, max_num: int) -> UMat:
     return thresh
 
 
-def contour(mask_img, img: UMat) -> tuple[Sequence[UMat], UMat, int]:
+def contour(mask_img: UMat, img: UMat) -> tuple[Sequence[UMat], UMat, int]:
     cont, _ = cv.findContours(mask_img, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
     print(f"number of images: {len(cont)}")
     cont_image = cv.drawContours(
