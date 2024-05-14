@@ -20,6 +20,7 @@ def open_image() -> tuple[UMat, UMat]:
 def test_blur():
     img, _ = open_image()
     blurred = blur(img)
+    # make sure the image is gray
     assert (len(blurred.shape) == 2)
 
 
@@ -27,7 +28,7 @@ def test_mask():
     img, image_to_output = open_image()
     blurred = blur(img)
     masked = mask(blurred, 105, 255)
-    cont, cont_img, num_of_image = contour(masked, img)
+    _, _, num_of_image = contour(masked, img)
     # test_image.jpeg only has 4 objects of interest in it
     # blurring and masking parameters influences the number of images detected
     assert (num_of_image == 4)
